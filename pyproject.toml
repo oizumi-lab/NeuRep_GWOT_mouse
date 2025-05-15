@@ -304,6 +304,7 @@ dependencies = [
     "yarl==1.18.3 ; python_full_version == '3.9.2'",
     "zipp==3.21.0 ; python_full_version == '3.9.2'",
     "tqdm>=4.67.1",
+    "typed-argument-parser>=1.10.1",
 ]
 
 [tool.uv.sources]
@@ -319,7 +320,10 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/neurep_gwot_mouse"]
+packages = [
+    "src/neurep_gwot_mouse",
+    "GW_methods"
+]
 
 [tool.ruff]
 line-length = 120
