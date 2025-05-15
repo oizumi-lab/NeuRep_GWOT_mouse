@@ -174,3 +174,5 @@ cython_debug/
 .pypirc
 
 takeda_abe_paper/
+
+.history

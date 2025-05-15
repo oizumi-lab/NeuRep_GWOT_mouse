@@ -21,8 +21,8 @@ from tqdm.auto import tqdm
 
 # First Party Library
 from neurep_gwot_mouse.allen_brain_toolbox.rdms.pipeline import make_pipeline
-from GWTune.src import visualization
-from GWTune.src.align_representations import AlignRepresentations, OptimizationConfig, Representation
+from GW_methods.src import visualization
+from GW_methods.src.align_representations import AlignRepresentations, OptimizationConfig, Representation
 
 #%% [markdown]
 # ## Function definition

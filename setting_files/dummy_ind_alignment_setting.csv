@@ -1,0 +1,3 @@
+exp_name,stimulus_name,storage_name,config_name
+dummy_mv1_ind,natural_movie_one,dummy_mv1,ta_paper.yaml
+dummy_mv3_ind,natural_movie_three,dummy_mv3,ta_paper.yaml

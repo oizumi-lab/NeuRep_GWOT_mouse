@@ -1,0 +1,7 @@
+# Description:
+normalize_scaler: {}
+
+mean_trials: {}
+
+make_rdm:
+  metric: 'cosine'

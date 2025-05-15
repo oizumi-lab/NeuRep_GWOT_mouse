@@ -1,0 +1,2 @@
+exp_name,stimulus_name,storage_name,session_split_name,config_name
+ta_paper_mv3_360frame_group4,natural_movie_three_360frame,ta_paper_mv3_360frame,session_split_4.csv,ta_paper.yaml

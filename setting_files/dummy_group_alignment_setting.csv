@@ -1,0 +1,3 @@
+exp_name,stimulus_name,storage_name,session_split_name,config_name
+dummy_mv1_group15,natural_movie_one,dummy_mv1,session_split_15.csv,ta_paper.yaml
+dummy_mv3_group15,natural_movie_three,dummy_mv3,session_split_15.csv,ta_paper.yaml
