@@ -1,6 +1,5 @@
 #%% [markdown]
-# # pseudo-mouse間の解析に必要な関数群 <br>
-# 設定はconfig/ns_mt_cosine_all2_combination.yamlを参照する. <br>
+# # Functions for analsis between pseudo-mice. <br>
 # EntropicGW2Computation
 # Standard Library
 import json
@@ -66,14 +65,14 @@ def load_spike_data_container(
     data_dir: Path,
     areas: List[str],
 ) -> Dict[str, SpikeDataContainer]:
-    """xr.DataArrayのspike_countsを読み込む関数
+    """Function to load spike_counts from an xr.DataArray
 
     Args:
-        data_dir (Path): raw dataのdirectory
-        areas (List[str]): 読み込むareaのリスト
+        data_dir (Path): Directory containing the raw data
+        areas (List[str]): List of brain areas to load
 
     Returns:
-        Dict[str, SpikeDataContainer]: areaをkey, SpikeDataContainerをvalueとした辞書
+        Dict[str, SpikeDataContainer]: Dictionary with brain areas as keys and SpikeDataContainer instances as values
     """
     spike_data_container_dic: Dict[str, SpikeDataContainer] = {}
     for area in areas:
@@ -83,15 +82,15 @@ def load_spike_data_container(
         for p in sorted(data_dir.glob(f"*/{area}_spike_counts_da.nc")):
             da = xr.open_dataarray(p)
 
-            # データのfiltering
+            # filtering data
             num_neurons = da.shape[2]
             sum0_stim = np.sum(da.values.sum(axis=2) == 0)
 
-            if (num_neurons < 20) or (sum0_stim >= 10):  # neuronの数が10未満の場合は除外, どのニューロンも発火しないstimulusがある場合は除外
+            if (num_neurons < 20) or (sum0_stim >= 10):  # Exclude if the number of neurons is less than 10, or if there exists a stimulus that no neurons respond to
                 print(f"session {p.parent.stem} is excluded")
                 continue
 
-            # データの保存
+            # save data
             spike_data_container.session_ids.append(p.parent.stem)
             spike_data_container.spike_counts.append(da)
 
@@ -106,11 +105,11 @@ def load_spike_data_container(
 
 # making pseudo container
 def choose_split(session_split_df: pd.DataFrame, condition: int) -> Tuple[List[str], List[str]]:
-    """csvからsession_idsを取得する関数
+    """Function to retrieve session IDs from a CSV
 
     Args:
-        session_split_df (pd.DataFrame): pseudo-mouseの分割が格納されたDataFrame
-        condition (int): どの列を選択するか
+        session_split_df (pd.DataFrame): DataFrame containing pseudo-mouse session splits
+        condition (int): Column index to select
 
     Returns:
         Tuple[List[str], List[str]]: session_ids_a, session_ids_b
@@ -128,16 +127,16 @@ def choose_split(session_split_df: pd.DataFrame, condition: int) -> Tuple[List[s
 def make_pseudo_container(
     areas: List[str], session_ids: Any, pipeline_config: dict, spike_data_container_dic: Dict[str, SpikeDataContainer]
 ) -> PseudoSpikeDataContainer:
-    """pseudo-mouseの神経活動を結合して、RDMを作成する関数
+    """Function to concatenate neural activity of a pseudo-mouse and generate an RDM
 
     Args:
-        areas (List[str]): 8領野
-        session_ids (List[str]): pseudo-mouseのsession_ids
-        pipeline_config (dict): RDMを作成するための設定
-        spike_data_container_dic (Dict[str, SpikeDataContainer]): areaをkey, SpikeDataContainerをvalueとした辞書
+        areas (List[str]): List of 8 brain regions
+        session_ids (List[str]): Session IDs of the pseudo-mouse
+        pipeline_config (dict): Configuration settings for RDM generation
+        spike_data_container_dic (Dict[str, SpikeDataContainer]): Dictionary with brain areas as keys and SpikeDataContainer instances as values
 
     Returns:
-        PseudoSpikeDataContainer: pseudo-mouseの神経活動を結合したもの
+        PseudoSpikeDataContainer: Concatenated neural activity of the pseudo-mouse
     """
     if isinstance(session_ids, np.ndarray):
         session_ids = session_ids.astype(str).tolist()
@@ -152,7 +151,7 @@ def make_pseudo_container(
 
             spike_data_container = spike_data_container_dic[area]
 
-            # indexの抽出
+            # extract index
             indices = []
             for session_id in session_ids:
                 if str(session_id) in spike_data_container.session_ids:
@@ -207,7 +206,7 @@ def make_align_representations(
 
 
 def do_rsa(align_representation: AlignRepresentations) -> None:
-    """RSAを行う. similarity matrixとdistributionをplotする.
+    """Execute RSA and plot similarity matrix and distribution.
 
     Args:
         align_representation (AlignRepresentations): AlignRepresentations object.
@@ -369,14 +368,14 @@ def save_pseudo_info(
 
 
 def reshape_evals(ev: np.ndarray, n: int) -> np.ndarray:
-    """[VISp_vs_VISp, VISp_vs_VISrl, ..., VISrl_vs_VISrl, ..., CA1_vs_CA1]のような1次元配列を2次元配列にreshapeする関数
+    """A function that reshapes a 1D array like [VISp_vs_VISp, VISp_vs_VISrl, …, VISrl_vs_VISrl, …, CA1_vs_CA1] into a 2D array.
 
     Args:
-        ev (np.ndarray): 1次元配列
-        n (int): 領野の数
+        ev (np.ndarray): 1D array
+        n (int): Number of brain regions
 
     Returns:
-        np.ndarray: 2次元配列
+        np.ndarray: 2D array
     """
     new_ev = np.zeros((n, n))
     c = 0
@@ -405,15 +404,15 @@ def whole_gw_alignment(
     delete_directory: bool = False,
     sim_mat_format: str = "default",
 ) -> None:
-    """main function. 領野ごとのRSA + GW alignmentを行う.
+    """main function. Perform RSA + GW alignment for each brain region.
 
     Args:
-        areas (List[str]): 8領野
+        areas (List[str]): 8 area
         pseudo_spike_data_container_a (PseudoSpikeDataContainer): pseudo_spike_data_container_a
         pseudo_spike_data_container_b (PseudoSpikeDataContainer): pseudo_spike_data_container_b
-        optim_config (OptimizationConfig): GW alignmentの設定
-        exp_name (str): 実験名
-        results_dir (Path): 保存先のdirectory
+        optim_config (OptimizationConfig): settting of GW alignment
+        exp_name (str): experiment name
+        results_dir (Path): directory to save the results
         compute_OT (bool, optional): _description_. Defaults to False.
         delete_results (bool, optional): _description_. Defaults to False.
         delete_database (bool, optional): _description_. Defaults to False.
