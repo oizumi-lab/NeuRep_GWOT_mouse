@@ -102,7 +102,7 @@ def parse_args():
 def main():
     """usage:
     ```
-    python ta_paper_ind_alignment.py <setting_file.csv> --target_dir <target_dir> --whole_data_dir <whole_data_dir> --session_split_dir <session_split_dir> --config_dir <config_dir>
+    python ta_paper_ind_alignment.py <setting_file.csv> --target_dir <target_dir> --whole_data_dir <whole_data_dir> --pairs_dict_path <pairs_dict_path> --config_dir <config_dir>
     ```
     """
     args = parse_args()
