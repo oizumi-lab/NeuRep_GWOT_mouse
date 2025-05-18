@@ -1,3 +1,19 @@
+# NeuRep_GWOT Analysis (mouse)
+
+## Pipeline
+1. Download Spike-Count Data from [Allen Brain Observatory Visual Coding - Neuropixels dataset](https://allensdk.readthedocs.io/en/latest/visual_coding_neuropixels.html)
+    - Reference: [`example/01_load_spike-data_using_AllenSDK.ipynb`](example/01_load_spike-data_using_AllenSDK.ipynb)
+    - Download spike data using AllenSDK
+    - Collect data from 8 brain regions (VISp, VISrl, VISl, VISal, VISpm, VISam, LGd, CA1) across 32 individual mice
+    - Record neural activity in response to 3 types of stimuli (natural_scenes, natural_movie_one, natural_movie_three)
+
+2. Main Analysis
+    - Reference: [`example/02_execute_unsupervised_alignment.ipynb`](example/02_execute_unsupervised_alignment.ipynb)
+    - Create Representational Dissimilarity Matrices (RDM)
+    - Compute GWOT between two pseudo-mice/individual mice
+    - Visualize results with heatmaps, dendrograms, and swarm plots
+
+
 ### Project Organization
 
 ------------
@@ -5,10 +21,10 @@
     ├── allen_brain_toolbox <- Toolbox to convert raw spike data to RDM
     │
     ├── data
-    │   ├── external        <- Data from third party sources.
-    │   ├── interim         <- Intermediate data that has been transformed.
-    │   ├── processed       <- The final, canonical data sets for modeling.
-    │   └── raw             <- The original, immutable data dump.
+    │   ├── external        <- Data from third party sources.
+    │   ├── interim         <- Intermediate data that has been transformed.
+    │   ├── processed       <- The final, canonical data sets for modeling.
+    │   └── raw             <- The original, immutable data dump.
     │
     ├── db_backup           <- Backup file of the database containing the main experimental results
     │
@@ -41,7 +57,7 @@
     ├── test                <- Predecessor of `allen_brain_toolbox`. Miscellaneous code for preprocessing.
     │
     ├── VISp_pseudo_results <- Initial results from alignment with pseudo-mouse in VISp.
-    │                       　　Not used in papers or publications.
+    │                         Not used in papers or publications.
     │
     ├── LICENSE
     ├── Makefile            <- Makefile with commands like `make data` or `make train`
