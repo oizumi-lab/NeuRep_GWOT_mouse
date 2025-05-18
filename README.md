@@ -18,56 +18,40 @@
 
 ------------
 
-    ├── allen_brain_toolbox <- Toolbox to convert raw spike data to RDM
+    ├── config /             <- Configuration files (YAML) for preprocessing (creating RDM) pipelines
     │
-    ├── data
-    │   ├── external        <- Data from third party sources.
-    │   ├── interim         <- Intermediate data that has been transformed.
-    │   ├── processed       <- The final, canonical data sets for modeling.
-    │   └── raw             <- The original, immutable data dump.
+    ├── example /                                   <- Example notebooks for experiment procedure
+    │   ├── 01_load_spike-data_using_AllenSDK.ipynb  <- Download Spike-Count Data using AllenSDK
+    │   └── 02_execute_unsupervised_alignment.ipynb  <- Main Analysis
     │
-    ├── db_backup           <- Backup file of the database containing the main experimental results
+    ├── GW_methods /         <- Toolbox for Gromov-Wasserstein Optimal Transport
     │
-    ├── docs                <- A default Sphinx project; see sphinx-doc.org for details
+    ├── scripts /            <- Main analysis scripts
+    │   ├── ta_paper_group_alignment.py    <- Group alignment implementation
+    │   ├── ta_paper_group_evaluation.py   <- Evaluation for group alignment
+    │   ├── ta_paper_ind_alignment.py      <- Individual alignment implementation
+    │   └── ta_paper_ind_evaluation.py     <- Evaluation for individual alignment
     │
-    ├── experiments         <- Results of GW Alignment under different experimental settings
-    │   ├── all_pseudo_abe
-    │   ├── each_animal_analysis
-    │   ├── exp_btwn_pseudo
-    │   ├── exp_btwn_trials
-    │   ├── firing_rate_comparison
-    │   ├── pseudo_abe
-    │   ├── pseudo_mitamura
-    │   ├── results
-    │   └── takeda_abe_paper
+    ├── session_split /      <- Session split information for experiments
+    │   ├── pairs_dict_ind.json            <- Individual mouse pair definitions
+    │   ├── session_split_15.csv           <- Session split for 15-mouse experiments
+    │   ├── session_split_4.csv            <- Session split for 4-mouse experiments
+    │   └── session_split_8.csv            <- Session split for 8-mouse experiments
     │
-    ├── GW_methods          <- Toolbox to do GW alignment
+    ├── setting_files /      <- Setting file for running multiple experiments simultaneously
+    │   ├── dummy_group_alignment_setting.csv
+    │   ├── dummy_ind_alignment_setting.csv
+    │   ├── ta_paper_group_alignment_setting.csv
+    │   └── ta_paper_ind_alignment_setting.csv
     │
-    ├── neuropixeltools     <- Predecessor of `allen_brain_toolbox`. Should be safe to delete, but keeping it just in case.
-    │
-    ├── notebooks           <- Trial and error when the analysis method is not yet determined
-    │
-    ├── readme_img          <- Images used in ReadMe.md
-    │
-    ├── src                 <- Predecessor of `allen_brain_toolbox`.
+    ├── src /                 <- Source code for this project
     │   └── neurep_gwot_mouse /
-    │       ├── neurep_gwot_mouse
-
+    │       ├── alignment               <- Alignment algorithm implementations
+    │       └── allen_brain_toolbox     <- Tools for processing Allen Brain data
     │
-    ├── test                <- Predecessor of `allen_brain_toolbox`. Miscellaneous code for preprocessing.
-    │
-    ├── VISp_pseudo_results <- Initial results from alignment with pseudo-mouse in VISp.
-    │                         Not used in papers or publications.
-    │
-    ├── LICENSE
-    ├── Makefile            <- Makefile with commands like `make data` or `make train`
-    ├── README.md           <- The top-level README for developers using this project.
-    │
-    ├── requirements.txt    <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py            <- makes project pip installable (pip install -e .) so src can be imported
-    └── tox.ini             <- tox file with settings for running tox; see tox.readthedocs.io
-
+    ├── README.md            <- The top-level README for users of this project
+    ├── pyproject.toml       <- Project dependencies and configuration
+    ├── requirements.txt     <- The requirements file for reproducing the analysis environment
+    └── uv.lock              <- Lock file for dependencies
 
 --------
