@@ -1,11 +1,9 @@
 #%% [markdown]
-# # 1個体ずつの解析 <br>
-# 設定はconfig/ns_mt_cosine_all2_combination.yamlを参照する. <br>
+# # Functions for analsis between individuals. <br>
 # NormalizeScaler -> MeanTrials -> MakeRDM(metric="cosine")
 # EntropicGW2Computation
 
 #%% [markdown]
-# ## ライブラリのインポート
 # Standard Library
 import json
 import pickle
@@ -53,14 +51,14 @@ def load_spike_data_container(
     areas: List[str],
     pipeline_config: Dict[str, Any],
 ) -> Dict[str, SpikeDataContainer]:
-    """xr.DataArrayのspike_countsを読み込む関数
+    """Function to load spike_counts from an xr.DataArray
 
     Args:
-        data_dir (Path): raw dataのdirectory
-        areas (List[str]): 読み込むareaのリスト
+        data_dir (Path): Directory containing the raw data
+        areas (List[str]): List of brain areas to load
 
     Returns:
-        Dict[str, SpikeDataContainer]: areaをkey, SpikeDataContainerをvalueとした辞書
+        Dict[str, SpikeDataContainer]: Dictionary with brain areas as keys and SpikeDataContainer instances as values
     """
     spike_data_container_dic: Dict[str, SpikeDataContainer] = {}
     for area in areas:
@@ -74,15 +72,15 @@ def load_spike_data_container(
             num_neurons = da.shape[2]
             sum0_stim = np.sum(da.values.sum(axis=2) == 0)
 
-            if (num_neurons < 20) or (sum0_stim >= 10):  # neuronの数が10未満の場合は除外, どのニューロンも発火しないstimulusがある場合は除外
+            if (num_neurons < 20) or (sum0_stim >= 10):  # Exclude if the number of neurons is less than 10, or if there exists a stimulus that no neurons respond to
                 print(f"session {p.parent.stem} is excluded")
                 continue
 
-            # rdmの作成
+            # make rdm
             pipeline = make_pipeline(pipeline_config)
             rdm = pipeline.fit_transform(da.values)
 
-            # データの保存
+            # save data
             spike_data_container.session_ids.append(p.parent.stem)
             spike_data_container.spike_counts.append(da)
             spike_data_container.rdms.append(rdm)
@@ -134,7 +132,7 @@ def make_align_representations(
 
 
 def do_rsa(align_representation: AlignRepresentations) -> None:
-    """RSAを行う. similarity matrixとdistributionをplotする.
+    """Execute RSA and plot similarity matrix and distribution.
 
     Args:
         align_representation (AlignRepresentations): AlignRepresentations object.
